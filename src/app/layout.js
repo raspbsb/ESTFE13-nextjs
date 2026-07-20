@@ -1,3 +1,5 @@
+// "use client";
+
 import "./globals.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Container from "react-bootstrap/Container";
@@ -5,14 +7,32 @@ import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import Link from "next/link";
 import Script from "next/script";
+import Controls from "./Controls";
+// import { useState, useEffect } from "react";
 
 export const metadata = {
   title: "웹 언어",
   description: "웹페이지 구현하기",
 };
 
-export default function RootLayout({ children }) {
+export default async function RootLayout({ children }) {
+  // const [topics, setTopics] = useState([]);
+
+  // useEffect(() => {
+  //   fetch("http://localhost:9999/topics")
+  //     .then(res => res.json())
+  //     .then(result => setTopics(result));
+  // }, []);
+
+  // console.log(topics);
+
+  const response = await fetch("http://localhost:9999/topics");
+  const topics = await response.json();
+
+  console.log(topics);
+
   console.log("공통 레이아웃 작동");
+
   return (
     <html lang="en" data-scroll-behavior="smooth">
       <body>
@@ -24,38 +44,26 @@ export default function RootLayout({ children }) {
               </Link>
             </h1>
             <ul className="nav d-flex">
-              <li className="nav-item">
-                <Link className="nav-link" href="/read/1">
-                  html
-                </Link>
-              </li>
-              <li className="nav-item">
-                <Link className="nav-link" href="/read/2">
-                  css
-                </Link>
-              </li>
-              <li className="nav-item">
-                <Link className="nav-link" href="/read/3">
-                  javascript
-                </Link>
-              </li>
+              {
+                // topics 배열을 활용해 메뉴 출력
+              }
+              {topics.map(topic => (
+                <li className="nav-item" key={topic.id}>
+                  <Link className="nav-link" href={`/read/${topic.id}`}>
+                    {topic.title}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
         </nav>
 
         <main>
           {children}
-          <div className="d-flex gap-1">
-            <Link className="btn btn-primary" href="/create">
-              Create
-            </Link>
-            <Link className="btn btn-secondary" href="/update">
-              Update
-            </Link>
-            <Link className="btn btn-danger" href="/delete">
-              Delete
-            </Link>
-          </div>
+
+          <hr />
+
+          <Controls />
         </main>
         <Script src="/main.js" strategy="afterInteractive" />
       </body>
