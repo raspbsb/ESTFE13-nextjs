@@ -19,14 +19,14 @@ export default async function RootLayout({ children }) {
   // const [topics, setTopics] = useState([]);
 
   // useEffect(() => {
-  //   fetch("http://localhost:9999/topics")
+  //   fetch(`${process.env.NEXT_PUBLIC_API_URL}/topics`)
   //     .then(res => res.json())
   //     .then(result => setTopics(result));
   // }, []);
 
   // console.log(topics);
 
-  const response = await fetch("http://localhost:9999/topics");
+  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/topics`);
   const topics = await response.json();
 
   console.log(topics);

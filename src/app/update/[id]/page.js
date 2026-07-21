@@ -24,15 +24,16 @@ export default function Update() {
       }),
     };
 
-    fetch(`http://localhost:9999/topics/${id}`, options)
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/topics/${id}`, options)
       .then(res => res.json())
       .then(result => {
         router.push(`/read/${id}`);
+        router.refresh();
       });
   };
 
   useEffect(() => {
-    fetch(`http://localhost:9999/topics/${id}`)
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/topics/${id}`)
       .then(res => res.json())
       .then(result => {
         setTitle(result.title);
